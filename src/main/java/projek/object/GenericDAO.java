@@ -7,7 +7,7 @@ import java.util.List;
 public class GenericDAO<T> implements BaseDAO<T> {
     private final String collectionName;
     private final Class<T> clazz; 
-    private List<T> dataList = new ArrayList<>();
+    private final List<T> dataList = new ArrayList<>();
 
     public GenericDAO(String collectionName, Class<T> clazz) {
         this.collectionName = collectionName;
