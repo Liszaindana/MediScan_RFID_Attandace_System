@@ -1,8 +1,7 @@
-package projek.object;
+package projek.util;
 
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
-
 
 public class TesKoneksi {
     public static void main(String[] args) {
@@ -22,7 +21,12 @@ public class TesKoneksi {
             System.out.println("Terhubung ke Database: " + database.getName());
             System.out.println("=========================================");
             
-            // 3. Opsional: Menampilkan daftar koleksi yang tersedia
+            // 3. Memasukkan data dummy agar database muncul di Compass
+            System.out.println("Mencoba memasukkan data dummy...");
+            database.getCollection("test_koneksi").insertOne(new Document("status", "aktif").append("pesan", "Database berhasil dibuat!"));
+            System.out.println("Data dummy berhasil dimasukkan.");
+
+            // 4. Menampilkan daftar koleksi yang tersedia
             System.out.println("Daftar Koleksi di " + database.getName() + ":");
             for (String name : database.listCollectionNames()) {
                 System.out.println("- " + name);

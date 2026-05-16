@@ -1,23 +1,23 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
-
 package projek.mediscan;
 
-import projek.object.Karyawan;
-/**
- *
- * @author Syamsul Hidayatulloh
- */
 public class MediScan {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
-        Karyawan KR = new Karyawan();
-        if(KR instanceof Karyawan){
-            System.err.println("Karyawan");
-        }else {
-            System.err.println("Something else");
-        }// //
+        /* Set the Nimbus look and feel */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(projek.GUI.LoginPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(() -> {
+            new projek.GUI.LoginPage().setVisible(true);
+        });
     }
 }
