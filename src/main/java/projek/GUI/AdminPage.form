@@ -144,13 +144,13 @@
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="7">
-                <StringItem index="0" value="Departemen Operasional (Front &amp; Back Office)"/>
-                <StringItem index="1" value="Departemen Pemasaran dan Hubungan Nasabah"/>
-                <StringItem index="2" value="Departemen Kredit (Pinjaman)"/>
-                <StringItem index="3" value="Departemen Manajemen Risiko dan Kepatuhan"/>
-                <StringItem index="4" value="Departemen Teknologi dan Informasi (TI)"/>
-                <StringItem index="5" value="Departemen Pendukung (Support)"/>
-                <StringItem index="6" value="Manajemen Tingkat Atas"/>
+                <StringItem index="0" value="Administrasi, Keuangan, &amp; SDM"/>
+                <StringItem index="1" value="Rekam Medis &amp; Pendaftaran"/>
+                <StringItem index="2" value="Pelayanan Medis (Dokter &amp; Perawat)"/>
+                <StringItem index="3" value="Penunjang Medis (Laboratorium, Radiologi, &amp; Farmasi)"/>
+                <StringItem index="4" value="Teknologi Informasi &amp; SIRS"/>
+                <StringItem index="5" value="Logistik, Sarpras, &amp; Keamanan (IPSRS)"/>
+                <StringItem index="6" value="Komite Medis &amp; Manajemen RS"/>
               </StringArray>
             </Property>
           </Properties>

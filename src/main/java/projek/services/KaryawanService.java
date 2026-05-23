@@ -80,47 +80,64 @@ public class KaryawanService {
 
         // Mengubah layout panel target menjadi BorderLayout
         panelTarget.setLayout(new BorderLayout());
-        // Mengatur warna background utama menjadi biru
-        panelTarget.setBackground(new Color(68, 114, 196));
+        // Mengatur warna background utama menjadi abu-abu terang modern (Slate 100)
+        panelTarget.setBackground(new Color(241, 245, 249));
 
         // Membuat panel grid khusus untuk menampung kotak/card
-        JPanel gridPanel = new JPanel(new GridLayout(0, 3, 10, 10));
-        gridPanel.setOpaque(false); // Transparan agar warna biru panelTarget terlihat
-        gridPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Memberi jarak dari tepi layar
+        JPanel gridPanel = new JPanel(new GridLayout(0, 3, 15, 15));
+        gridPanel.setOpaque(false); // Transparan agar warna abu-abu panelTarget terlihat
+        gridPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15)); // Memberi jarak dari tepi layar
 
         // 3. Iterasi data dan menambahkannya ke panel grid
         try {
             for (Karyawan k : daftarKaryawan) {
-                // Membuat panel 'Card' (box orange) untuk 1 karyawan
-                // Layout 4 baris 1 kolom agar kolor berisi Nama,ID, Departemen, panel control 
-                JPanel cardPanel = new JPanel(new GridLayout(4, 1, 0, 0));
-                cardPanel.setBackground(new Color(237, 125, 49)); // Warna background orange
+                // Membuat panel 'Card' (box putih) untuk 1 karyawan
+                // Layout 4 baris 1 kolom
+                JPanel cardPanel = new JPanel(new GridLayout(4, 1, 0, 5));
+                cardPanel.setBackground(Color.WHITE); // Warna background putih bersih
 
-                // Memberikan garis tepi tipis membulat (rounded) dan padding/jarak ke dalam
+                // Memberikan garis tepi tipis abu-abu (rounded) dan padding ke dalam
                 cardPanel.setBorder(BorderFactory.createCompoundBorder(
-                        BorderFactory.createLineBorder(Color.MAGENTA, 1, true),
+                        BorderFactory.createLineBorder(new Color(226, 232, 240), 1, true), // Slate 200
                         BorderFactory.createEmptyBorder(15, 15, 15, 15)
                 ));
 
-                // Membuat Label Nama & Set warna teks jadi Putih
+                // Membuat Label Nama (Bold, Slate 900)
                 JLabel lblNama = new JLabel("Nama: " + k.getNamaLengkap());
-                lblNama.setForeground(Color.WHITE);
+                lblNama.setForeground(new Color(15, 23, 42));
+                lblNama.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 14));
 
-                // Membuat Label ID Karyawan & Set warna teks jadi Putih
+                // Membuat Label ID Karyawan (Slate 600)
                 JLabel lblIDK = new JLabel("ID Karyawan: " + k.getIdKaryawan());
-                lblIDK.setForeground(Color.WHITE);
+                lblIDK.setForeground(new Color(71, 85, 105));
+                lblIDK.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 12));
 
-                // Membuat Label Departemen & Set warna teks jadi Putih
-                JLabel lblDept = new JLabel("Departmen: " + k.getDepartemen());
-                lblDept.setForeground(Color.WHITE);
+                // Membuat Label Departemen (Slate 600)
+                JLabel lblDept = new JLabel("Departemen: " + k.getDepartemen());
+                lblDept.setForeground(new Color(71, 85, 105));
+                lblDept.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 12));
 
                 // Membuat panel kontrol 1 baris 2 kolom, berisi tombol edit dan hapus
-                JPanel controlPanel = new JPanel(new GridLayout(1, 2, 20, 15));
-                controlPanel.setBackground(new Color(237, 125, 49));
+                JPanel controlPanel = new JPanel(new GridLayout(1, 2, 10, 0));
+                controlPanel.setBackground(Color.WHITE);
 
                 JButton tombolEdit = new JButton("Edit");
-                tombolEdit.setBackground(Color.ORANGE);
+                tombolEdit.setBackground(new Color(0, 120, 174)); // Medical Blue
+                tombolEdit.setForeground(Color.WHITE);
+                tombolEdit.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12));
+                tombolEdit.setFocusPainted(false);
+                tombolEdit.setBorderPainted(false);
                 tombolEdit.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                tombolEdit.addMouseListener(new java.awt.event.MouseAdapter() {
+                    @Override
+                    public void mouseEntered(java.awt.event.MouseEvent evt) {
+                        tombolEdit.setBackground(new Color(0, 91, 132)); // Darker medical blue
+                    }
+                    @Override
+                    public void mouseExited(java.awt.event.MouseEvent evt) {
+                        tombolEdit.setBackground(new Color(0, 120, 174));
+                    }
+                });
                 tombolEdit.addActionListener((ActionEvent e) -> {
                     AdminPage.txtUID.setText(k.getUidRfid());
                     AdminPage.txtKRID.setText(k.getIdKaryawan());
@@ -130,15 +147,29 @@ public class KaryawanService {
                     AdminPage.btnUpdate.setEnabled(true);
                     AdminPage.btnSave.setEnabled(false); 
                 });
+
                 JButton tombolDelete = new JButton("Delete");
-                tombolDelete.setBackground(Color.RED);
+                tombolDelete.setBackground(new Color(239, 68, 68)); // Red 500
                 tombolDelete.setForeground(Color.WHITE);
+                tombolDelete.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12));
+                tombolDelete.setFocusPainted(false);
+                tombolDelete.setBorderPainted(false);
                 tombolDelete.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                tombolDelete.addMouseListener(new java.awt.event.MouseAdapter() {
+                    @Override
+                    public void mouseEntered(java.awt.event.MouseEvent evt) {
+                        tombolDelete.setBackground(new Color(185, 28, 28)); // Darker red
+                    }
+                    @Override
+                    public void mouseExited(java.awt.event.MouseEvent evt) {
+                        tombolDelete.setBackground(new Color(239, 68, 68));
+                    }
+                });
                 tombolDelete.addActionListener((ActionEvent e) -> {
                     Object[] options = {"Ya, Hapus", "Batal"};
                     int choice = JOptionPane.showOptionDialog(
                             null, // Parent component
-                            "Apakah Anda ingin menyimpan data "+k.getNamaLengkap()+"?", // Message
+                            "Apakah Anda ingin menghapus data "+k.getNamaLengkap()+"?", // Message
                             "Konfirmasi Pengelolaan", // Title
                             JOptionPane.YES_NO_OPTION, // Option type
                             JOptionPane.QUESTION_MESSAGE, // Message type
@@ -158,7 +189,7 @@ public class KaryawanService {
                 controlPanel.add(tombolEdit);
                 controlPanel.add(tombolDelete);
 
-                // Memasukkan label ke dalam cardPanel (box orange)
+                // Memasukkan label ke dalam cardPanel (box putih)
                 cardPanel.add(lblNama);
                 cardPanel.add(lblIDK);
                 cardPanel.add(lblDept);

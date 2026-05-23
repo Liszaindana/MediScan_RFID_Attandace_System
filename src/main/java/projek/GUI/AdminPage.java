@@ -2,15 +2,166 @@ package projek.GUI;
 
 import projek.object.Karyawan;
 import projek.services.KaryawanService;
-
+import java.awt.Color;
 
 public class AdminPage extends javax.swing.JFrame {
 
+    // ─── Hospital Color Palette ───────────────────────────────────────────────
+    private static final Color CLR_PRIMARY    = new Color(0, 120, 174);   // Medical Blue
+    private static final Color CLR_SUCCESS    = new Color(0, 168, 143);   // Teal-Green (Save)
+    private static final Color CLR_SUCCESS_DK = new Color(0, 130, 110);
+    private static final Color CLR_AMBER      = new Color(217, 119, 6);   // Amber (Update)
+    private static final Color CLR_AMBER_DK   = new Color(180, 95, 0);
+    private static final Color CLR_SLATE      = new Color(100, 116, 139); // Slate (Refresh)
+    private static final Color CLR_SLATE_DK   = new Color(71, 85, 105);
+    private static final Color CLR_BG         = new Color(245, 248, 252);
+    private static final Color CLR_CARD       = new Color(255, 255, 255);
+    private static final Color CLR_BORDER     = new Color(219, 229, 239);
+    private static final Color CLR_TEXT_M     = new Color(71, 100, 130);
+
     public AdminPage() {
         initComponents();
-        
-        showData(""); //tampilkan seluruh data karyawan    
-        
+        styleCustomComponents();
+        showData(""); //tampilkan seluruh data karyawan
+    }
+
+    private void styleCustomComponents() {
+        setLocationRelativeTo(null);
+        setTitle("MediScan — Kelola Karyawan Rumah Sakit");
+
+        // ── 1. Create a header bar at the very top ─────────────────────────────
+        javax.swing.JPanel headerBar = new javax.swing.JPanel(new java.awt.BorderLayout());
+        headerBar.setBackground(CLR_PRIMARY);
+        headerBar.setPreferredSize(new java.awt.Dimension(0, 60));
+        headerBar.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 24, 0, 24));
+
+        javax.swing.JPanel headerLeft = new javax.swing.JPanel(
+            new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 15));
+        headerLeft.setOpaque(false);
+
+        javax.swing.JLabel lblHeaderIcon = new javax.swing.JLabel("✚");
+        lblHeaderIcon.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 22));
+        lblHeaderIcon.setForeground(new Color(255, 255, 255, 180));
+
+        javax.swing.JLabel lblHeaderTitle = new javax.swing.JLabel(
+            "Manajemen Data Karyawan Rumah Sakit");
+        lblHeaderTitle.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 16));
+        lblHeaderTitle.setForeground(CLR_CARD);
+
+        headerLeft.add(lblHeaderIcon);
+        headerLeft.add(lblHeaderTitle);
+        headerBar.add(headerLeft, java.awt.BorderLayout.WEST);
+
+        // ── 2. Top Form Panel (jPanel1) ────────────────────────────────────────
+        jPanel1.setBackground(CLR_CARD);
+        jPanel1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, CLR_BORDER));
+
+        // Use a wrapper panel to hold both headerBar and jPanel1 inside PAGE_START
+        javax.swing.JPanel topContainer = new javax.swing.JPanel();
+        topContainer.setLayout(new javax.swing.BoxLayout(topContainer, javax.swing.BoxLayout.Y_AXIS));
+        topContainer.add(headerBar);
+        topContainer.add(jPanel1);
+        getContentPane().add(topContainer, java.awt.BorderLayout.PAGE_START);
+
+        // Labels — hospital navy-muted
+        jLabel1.setForeground(CLR_TEXT_M);
+        jLabel1.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12));
+        jLabel2.setForeground(CLR_TEXT_M);
+        jLabel2.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12));
+        jLabel3.setForeground(CLR_TEXT_M);
+        jLabel3.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12));
+        jLabel4.setForeground(CLR_TEXT_M);
+        jLabel4.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12));
+
+        // Inputs — clean light-blue border
+        Color inputBorder = new Color(186, 212, 232);
+        txtUID.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 13));
+        txtUID.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+            new javax.swing.border.LineBorder(inputBorder, 1, true),
+            javax.swing.BorderFactory.createEmptyBorder(5, 8, 5, 8)
+        ));
+        txtKRID.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 13));
+        txtKRID.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+            new javax.swing.border.LineBorder(inputBorder, 1, true),
+            javax.swing.BorderFactory.createEmptyBorder(5, 8, 5, 8)
+        ));
+        txtKRName.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 13));
+        txtKRName.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+            new javax.swing.border.LineBorder(inputBorder, 1, true),
+            javax.swing.BorderFactory.createEmptyBorder(5, 8, 5, 8)
+        ));
+        txtKRDept.setBackground(CLR_CARD);
+        txtKRDept.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 13));
+        txtKRDept.setBorder(new javax.swing.border.LineBorder(inputBorder, 1, true));
+
+        // Separator
+        jSeparator1.setForeground(CLR_BORDER);
+
+        // ── 3. Buttons Panel (jPanel3) — hospital-themed colors ────────────────
+        jPanel3.setBackground(CLR_CARD);
+
+        // Save — teal-green (health/positive action)
+        btnSave.setBackground(CLR_SUCCESS);
+        btnSave.setForeground(CLR_CARD);
+        btnSave.setFocusPainted(false);
+        btnSave.setBorderPainted(false);
+        btnSave.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12));
+        btnSave.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnSave.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override public void mouseEntered(java.awt.event.MouseEvent e) {
+                if (btnSave.isEnabled()) btnSave.setBackground(CLR_SUCCESS_DK);
+            }
+            @Override public void mouseExited(java.awt.event.MouseEvent e) {
+                if (btnSave.isEnabled()) btnSave.setBackground(CLR_SUCCESS);
+            }
+        });
+
+        // Update — amber/orange (caution/edit action)
+        btnUpdate.setBackground(CLR_AMBER);
+        btnUpdate.setForeground(CLR_CARD);
+        btnUpdate.setFocusPainted(false);
+        btnUpdate.setBorderPainted(false);
+        btnUpdate.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12));
+        btnUpdate.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnUpdate.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override public void mouseEntered(java.awt.event.MouseEvent e) {
+                if (btnUpdate.isEnabled()) btnUpdate.setBackground(CLR_AMBER_DK);
+            }
+            @Override public void mouseExited(java.awt.event.MouseEvent e) {
+                if (btnUpdate.isEnabled()) btnUpdate.setBackground(CLR_AMBER);
+            }
+        });
+
+        // Refresh — neutral slate
+        btnRefresh.setBackground(CLR_SLATE);
+        btnRefresh.setForeground(CLR_CARD);
+        btnRefresh.setFocusPainted(false);
+        btnRefresh.setBorderPainted(false);
+        btnRefresh.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12));
+        btnRefresh.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnRefresh.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override public void mouseEntered(java.awt.event.MouseEvent e) {
+                btnRefresh.setBackground(CLR_SLATE_DK);
+            }
+            @Override public void mouseExited(java.awt.event.MouseEvent e) {
+                btnRefresh.setBackground(CLR_SLATE);
+            }
+        });
+
+        // ── 4. Search Area ────────────────────────────────────────────────────
+        jPanel2.setBackground(CLR_CARD);
+        txtCari.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 13));
+        txtCari.setForeground(new Color(15, 40, 70));
+        txtCari.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+            new javax.swing.border.LineBorder(inputBorder, 1, true),
+            javax.swing.BorderFactory.createEmptyBorder(5, 8, 5, 8)
+        ));
+
+        // ── 5. Content / Card List Area ───────────────────────────────────────
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 16, 16, 16));
+        jScrollPane1.setBackground(CLR_BG);
+        jScrollPane1.getViewport().setBackground(CLR_BG);
+        jPanel4.setBackground(CLR_BG);
     }
 
 
@@ -46,7 +197,7 @@ public class AdminPage extends javax.swing.JFrame {
 
         jLabel4.setText("Departemen");
 
-        txtKRDept.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Departemen Operasional (Front & Back Office)", "Departemen Pemasaran dan Hubungan Nasabah", "Departemen Kredit (Pinjaman)", "Departemen Manajemen Risiko dan Kepatuhan", "Departemen Teknologi dan Informasi (TI)", "Departemen Pendukung (Support)", "Manajemen Tingkat Atas" }));
+        txtKRDept.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Administrasi, Keuangan, & SDM", "Rekam Medis & Pendaftaran", "Pelayanan Medis (Dokter & Perawat)", "Penunjang Medis (Laboratorium, Radiologi, & Farmasi)", "Teknologi Informasi & SIRS", "Logistik, Sarpras, & Keamanan (IPSRS)", "Komite Medis & Manajemen RS" }));
 
         btnSave.setBackground(new java.awt.Color(0, 0, 255));
         btnSave.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
