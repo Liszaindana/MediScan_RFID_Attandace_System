@@ -26,6 +26,22 @@ public class TesKoneksi {
             database.getCollection("test_koneksi").insertOne(new Document("status", "aktif").append("pesan", "Database berhasil dibuat!"));
             System.out.println("Data dummy berhasil dimasukkan.");
 
+            // 3b. Mendaftarkan user default jika belum ada
+            Document adminFilter = new Document("username", "admin");
+            long adminCount = database.getCollection("users").countDocuments(adminFilter);
+            if (adminCount == 0) {
+                System.out.println("User 'admin' belum ada. Membuat user default...");
+                Document adminUser = new Document()
+                        .append("fullname", "Administrator")
+                        .append("username", "admin")
+                        .append("password", "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918") // Hash SHA-256 dari "admin"
+                        .append("lastLogin", null);
+                database.getCollection("users").insertOne(adminUser);
+                System.out.println("User default 'admin' dengan password 'admin' berhasil didaftarkan!");
+            } else {
+                System.out.println("User 'admin' sudah terdaftar di database.");
+            }
+
             // 4. Menampilkan daftar koleksi yang tersedia
             System.out.println("Daftar Koleksi di " + database.getName() + ":");
             for (String name : database.listCollectionNames()) {

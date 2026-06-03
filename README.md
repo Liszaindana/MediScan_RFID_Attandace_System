@@ -7,11 +7,12 @@ MediScan adalah sistem presensi pintar modern berbasis Java Desktop yang diranca
 ## 🎨 Modern Hospital UI & Design System
 
 Aplikasi ini telah dimodernisasi secara menyeluruh menggunakan prinsip **Design Thinking** untuk memberikan kenyamanan maksimal bagi staf administrasi rumah sakit dan menghindari kelelahan mata (*visual fatigue*):
-*   **Medical Color Palette**: Dominasi warna **Medical Blue (`#0078AE`)** yang melambangkan keandalan medis, **Teal/Green (`#00A88F`)** sebagai representasi kesehatan, serta latar belakang netral **Soft Gray/Blue (`#F5F8FC`)** untuk estetika yang sejuk.
-*   **Breathing Space Layout**: Penerapan sistem tata letak (*padding*) longgar `16px` di sekeliling daftar komponen dan margin `15px` di antara kartu karyawan untuk kemudahan interaksi.
-*   **Rounded Design**: Kotak isian (*input fields*) dan kartu-kartu informasi karyawan menggunakan garis tepi halus melingkar (*rounded border*) dengan bayangan transisi yang elegan.
-*   **Dynamic Interactive Cards**: Setiap daftar karyawan ditampilkan dalam bentuk kartu (*card*) putih minimalis yang dilengkapi efek hover dinamis saat kursor melintas.
-*   **Disabled Guard Pattern**: Tombol **Update** terkunci secara default dan baru akan aktif ketika tombol **Edit** pada salah satu kartu karyawan diklik demi mencegah modifikasi data yang tidak disengaja.
+*   **Medical Color Palette**: Dominasi warna **Hospital Blue (`#005382`)** yang melambangkan keandalan medis, **Teal/Cyan Accent (`#00BCD4`)** sebagai representasi teknologi kesehatan modern, serta latar belakang netral **Soft Blue (`#ECF5FF`)** untuk estetika yang sejuk.
+*   **Programmatic Vector Icons**: Semua ikon navigasi di sidebar digambar secara langsung (rendering vector anti-alias Java 2D) sehingga tampil tajam di resolusi apa pun dan 100% kompatibel di sistem operasi Windows tanpa error font square `□`.
+*   **Breathing Space Layout**: Penerapan sistem tata letak (*padding*) longgar di sekeliling daftar komponen dan margin terstruktur untuk memudahkan navigasi.
+*   **Dynamic Interactive Cards & Forms**: Input form bergaya modern di sebelah kiri dengan highlight border berwarna cyan ketika aktif, serta daftar staf medis di kanan yang terstruktur rapi.
+*   **Real-time Digital Clock**: Dilengkapi penunjuk waktu real-time digital presisi tinggi di bagian header utama untuk mencatat momen presensi secara visual.
+*   **Dynamic Status Bar**: Indikator statistik yang diperbarui secara langsung di bagian bawah tabel untuk menampilkan total karyawan terdaftar, serta indikator status koneksi MongoDB.
 
 ---
 
@@ -25,6 +26,26 @@ MediScan dibangun dengan arsitektur berstandar industri menggunakan **Generic Pr
     *   **DRY (Don't Repeat Yourself)**: Menghilangkan penulisan ratusan baris kode DAO yang berulang.
     *   **Type Safety**: Menjamin keamanan tipe data pada tingkat kompilasi.
     *   **Skalabilitas Tinggi**: Menambahkan entitas baru hanya memerlukan pembuatan POJO tanpa memodifikasi logika database.
+
+---
+
+## 🔒 Keamanan & Enkripsi Hashing (SHA-256)
+
+Aplikasi menerapkan pengamanan kredensial terenkripsi satu arah menggunakan algoritma **SHA-256** untuk mematuhi standar privasi data rumah sakit:
+
+### 1. Struktur Komponen Keamanan
+*   **`projek.util.SecurityUtils`**: Kelas utilitas yang menyediakan metode `getHash(input, algorithm)`. Berfungsi mengonversi string password mentah menjadi representasi hash hex 64-karakter yang tidak dapat dikembalikan ke bentuk semula.
+*   **`projek.services.AuthService`**: Mengontrol logika login dan registrasi.
+    *   **Saat Registrasi (`registerUser`)**: Password mentah dari form pendaftaran di-hash terlebih dahulu menggunakan `SecurityUtils.getHash(password, "SHA-256")` sebelum disimpan ke database.
+    *   **Saat Login (`login`)**: Password yang dimasukkan oleh pengguna di-hash, lalu dicocokkan dengan hash yang ada di MongoDB melalui query `Filters.and(Filters.eq("username", username), Filters.eq("password", hashedInput))`.
+*   **`projek.object.User`**: POJO (Plain Old Java Object) representasi entitas pengguna yang menjaga nilai password selalu dalam bentuk hash terenkapsulasi.
+*   **`projek.util.TesKoneksi`**: Secara otomatis menginjeksi akun `admin` default ke database dengan password ter-hash (`8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918`) apabila koleksi `users` terdeteksi kosong saat inisialisasi awal.
+
+### 2. Cara Verifikasi Hashing Sukses
+*   **Melalui MongoDB Compass / Shell**:
+    1. Hubungkan ke database MongoDB Anda (URI: `mongodb://localhost:27017`).
+    2. Buka database `mediscan` dan masuk ke koleksi `users`.
+    3. Anda akan melihat data user `admin` tersimpan dengan field `"password": "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"`. Password mentah tidak pernah disimpan langsung.
 
 ---
 
@@ -89,4 +110,4 @@ Sebelum menjalankan aplikasi, pastikan Anda telah menyiapkan prasyarat berikut:
 ---
 
 **Developer**: Lisza Indana & Team  
-**Versi**: 1.1.0 (Hospital-Grade Stable)
+**Versi**: 1.2.0 (Hospital-Grade Vector Stable)

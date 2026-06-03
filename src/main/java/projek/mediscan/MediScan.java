@@ -12,12 +12,12 @@ public class MediScan {
                 }
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(projek.GUI.Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(projek.GUI.LoginPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new projek.GUI.Login().setVisible(true);
+            new projek.GUI.LoginPage().setVisible(true);
         });
     }
 }
