@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.mediscan.services;
 
 import com.fazecast.jSerialComm.SerialPort;
@@ -12,10 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-/**
- *
- * @author mnish
- */
 public class SerialService {
     private static SerialService instance;
     private SerialPort activePort;

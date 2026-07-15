@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.mediscan.palette;
 
 import java.awt.Color;
@@ -13,10 +9,6 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import javax.swing.JToggleButton;
 
-/**
- *
- * @author mnish
- */
 public class SlidingStatusToggle extends JToggleButton {
 
     // Tema warna dark-mode disesuaikan dengan Bootstrap modern
@@ -25,6 +17,20 @@ public class SlidingStatusToggle extends JToggleButton {
     private final Color COLOR_SLIDER_PULANG = new Color(220, 53, 69);   // Slider Merah (Pulang - Kanan)
 
     private final int cornerRadius = 24; // Membuat bentuk kapsul/pil yang halus
+
+    // Label teks kiri & kanan — dapat diubah dari luar untuk i18n
+    private String labelLeft  = "Masuk";
+    private String labelRight = "Pulang";
+
+    /**
+     * Atur teks kiri (IN) dan kanan (OUT) yang tampil di dalam toggle.
+     * Panggil dari applyLanguage() pada AttendancePage.
+     */
+    public void setLabels(String left, String right) {
+        this.labelLeft  = left;
+        this.labelRight = right;
+        repaint();
+    }
 
     public SlidingStatusToggle() {
         super();
@@ -97,19 +103,17 @@ public class SlidingStatusToggle extends JToggleButton {
         FontMetrics fm = g2.getFontMetrics();
         int textY = (h / 2) + (fm.getAscent() / 2) - 2; // Sumbu Y presisi di tengah vertikal
 
-        // Teks Sisi Kiri -> MASUK
-        String textLeft = "Masuk";
-        int textLeftX = (w / 4) - (fm.stringWidth(textLeft) / 2); // Presisi tengah di area kiri
+        // Teks Sisi Kiri -> IN
+        String textLeft = labelLeft;
+        int textLeftX = (w / 4) - (fm.stringWidth(textLeft) / 2);
 
-        // Jika aktif di kiri, teks berwarna putih terang. Jika tidak, abu-abu redup.
         g2.setColor(!isPulangActive ? Color.WHITE : new Color(130, 135, 145));
         g2.drawString(textLeft, textLeftX, textY);
 
-        // Teks Sisi Kanan -> PULANG
-        String textRight = "Pulang";
-        int textRightX = ((w / 4) * 3) - (fm.stringWidth(textRight) / 2); // Presisi tengah di area kanan
+        // Teks Sisi Kanan -> OUT
+        String textRight = labelRight;
+        int textRightX = ((w / 4) * 3) - (fm.stringWidth(textRight) / 2);
 
-        // Jika aktif di kanan, teks berwarna putih terang. Jika tidak, abu-abu redup.
         g2.setColor(isPulangActive ? Color.WHITE : new Color(130, 135, 145));
         g2.drawString(textRight, textRightX, textY);
 

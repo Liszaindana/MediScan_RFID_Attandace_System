@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.mediscan.services;
 
 import com.mycompany.mediscan.dao.GenericDAO;
@@ -24,10 +20,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import org.bson.conversions.Bson;
 
-/**
- *
- * @author mnish
- */
 public class KaryawanService {
 
     // Inisialisasi GenericDAO khusus untuk entitas Karyawan
@@ -184,6 +176,8 @@ public class KaryawanService {
             panelTarget.revalidate();
             panelTarget.repaint();
         } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error loading Karyawan data: " + e.getMessage());
         }
     }
 
@@ -209,9 +203,17 @@ public class KaryawanService {
         return results;
     }
     
-    public Karyawan findByUid(String hashedUid) {
-        Bson filter = com.mongodb.client.model.Filters.eq("uidRfid", hashedUid);
-        return DAO.findOne(filter);
+    public Karyawan findByUid(String rawUid) {
+        // 1. Coba cari dengan plain text UID (jika ada data lama yang belum terenkripsi/hash)
+        Bson filterPlain = com.mongodb.client.model.Filters.eq("uidRfid", rawUid);
+        Karyawan k = DAO.findOne(filterPlain);
+        if (k == null) {
+            // 2. Coba cari dengan hashed SHA-256 (format data baru)
+            String hashed = com.mycompany.mediscan.util.SecurityUtils.getHash(rawUid, com.mycompany.mediscan.util.SecurityUtils.SHA_256);
+            Bson filterHashed = com.mongodb.client.model.Filters.eq("uidRfid", hashed);
+            k = DAO.findOne(filterHashed);
+        }
+        return k;
     }
 
     /**

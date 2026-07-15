@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.mycompany.mediscan.services;
 
 import com.mycompany.mediscan.objects.User;
@@ -14,10 +11,6 @@ import java.awt.Frame;
 import javax.swing.JOptionPane;
 import java.time.LocalDateTime;
 
-/**
- *
- * @author mnish
- */
 public class AuthService {
 
     // Inisialisasi DAO untuk koleksi "users" [8]
@@ -47,7 +40,7 @@ public class AuthService {
             userDAO.update(Filters.eq("username", username), user);
 
             // Berhasil: Masuk ke Halaman Admin
-            JOptionPane.showMessageDialog(null, "Selamat Datang, " + user.getFullname());
+            JOptionPane.showMessageDialog(null, I18nService.get("ui.login.welcome") + " " + user.getFullname());
             AdminPage admPage = new AdminPage();
             admPage.setLocationRelativeTo(null); 
             admPage.setVisible(true);
@@ -56,8 +49,8 @@ public class AuthService {
         } else {
             // Gagal: Notifikasi Error
             JOptionPane.showMessageDialog(null,
-                    "Username atau Password Salah!",
-                    "Login Gagal",
+                    I18nService.get("ui.login.failed"),
+                    I18nService.get("ui.login.failed.title"),
                     JOptionPane.ERROR_MESSAGE);
         }
     }

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.mediscan.services;
 
 import java.time.LocalDateTime;
@@ -9,15 +5,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import javax.swing.JLabel;
 
-/**
- *
- * @author mnish
- */
-
-/**
- * Layanan Jam Digital yang memberikan fleksibilitas kontrol thread ke UI.
- * Target: Sub-CPMK 5 (Concurrency Management) [1].
- */
 public class DigitalClockService {
 
     private final JLabel targetLabel;

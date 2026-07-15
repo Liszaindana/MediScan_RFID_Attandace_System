@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.mediscan.util;
 
 import java.security.MessageDigest;
@@ -9,10 +5,6 @@ import java.security.NoSuchAlgorithmException;
 
 
 
-/**
- *
- * @author sy
- */
 public class SecurityUtils {
     // Konstanta pilihan algoritma SHA yang tersedia di JCA [3]
     public static final String SHA_1 = "SHA-1";

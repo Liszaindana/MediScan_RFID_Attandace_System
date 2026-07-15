@@ -2,10 +2,6 @@ package com.mycompany.mediscan.objects;
 
 import java.time.LocalDateTime;
 
-/**
- *
- * @author mnish
- */
 public class User {
 
     private String fullname;

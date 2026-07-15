@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.mediscan.util;
 
 import java.security.InvalidKeyException;
@@ -14,16 +10,12 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
 
-/**
- *
- * @author mnish
- */
 public class EncryptionUtils {
     private static final String ALGORITHM = "AES";
     
     // Kunci rahasia (harus 16 karakter untuk AES-128)
     // Dalam industri nyata, kunci ini disimpan di environment variable atau KeyVault
-    private static final String KEY = System.getProperty("KEY");
+    private static final String KEY = System.getProperty("KEY", "MediscanKey12345");
     private static final byte[] SECRET_KEY = KEY.getBytes(); 
     
     /**

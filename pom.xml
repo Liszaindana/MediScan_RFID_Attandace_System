@@ -8,7 +8,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>24</maven.compiler.release>
-        <exec.mainClass>projek.mediscan.MediScan</exec.mainClass>
+        <exec.mainClass>com.mycompany.mediscan.gui.LoginPage</exec.mainClass>
     </properties>
     
     <dependencies>

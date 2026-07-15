@@ -1,11 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.mediscan.gui.panel;
 
 import com.mycompany.mediscan.gui.AdminPage;
 import com.mycompany.mediscan.gui.AttendancePage;
+import com.mycompany.mediscan.gui.LoginPage;
+import com.mycompany.mediscan.services.I18nService;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -16,15 +14,12 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
-/**
- *
- * @author mnish
- */
 public class SidebarMainMenu extends JPanel {
 
     private final Color SIDEBAR_BG = new Color(30, 41, 59);
@@ -35,48 +30,56 @@ public class SidebarMainMenu extends JPanel {
     private final Color TEXT_COLOR = Color.WHITE;
 
     private JButton activeButton = null;
+    private final I18nService.I18nChangeListener languageListener = this::rebuildMenu;
 
     public SidebarMainMenu() {
         this.setPreferredSize(new Dimension(260, 0));
         this.setBackground(new Color(33, 37, 41));
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        // DASHBOARD SECTION
+        rebuildMenu();
+        I18nService.registerListener(languageListener);
+    }
+
+    private void rebuildMenu() {
+        this.removeAll();
+        activeButton = null;
+
+        // DATA MASTER Accordion
+        String titleMaster = I18nService.get("ui.sidebar.dashboard") + " & " + I18nService.get("ui.sidebar.employee");
         this.add(createAccordion(
-                "Data Master",
-                new String[]{"Karyawan", "Log Absensi", "Pengguna"}
+                titleMaster,
+                new String[]{
+                    I18nService.get("ui.sidebar.dashboard"),
+                    I18nService.get("ui.sidebar.employee"),
+                    I18nService.get("ui.sidebar.logAttendance")  // Log Absensi (read-only)
+                }
         ));
 
-        // MANAGEMENT SECTION
+        // KIOSK & SETTINGS Accordion
+        String titleKiosk = I18nService.get("ui.sidebar.kiosk") + " & " + I18nService.get("ui.sidebar.settings");
         this.add(createAccordion(
-                "Attendance",
-                new String[]{"KiosK", "Riwayat", "Analisis"}
-        ));
-
-        // SETTINGS SECTION
-        this.add(createAccordion(
-                "Settings",
-                new String[]{"General"}
-        ));
-
-        // REPORT SECTION
-        this.add(createAccordion(
-                "Report",
-                new String[]{"Log Absensi", "Performance"}
+                titleKiosk,
+                new String[]{
+                    I18nService.get("ui.sidebar.kiosk"),      // Halaman tap kartu RFID
+                    I18nService.get("ui.sidebar.report"),
+                    I18nService.get("ui.sidebar.settings"),
+                    I18nService.get("ui.sidebar.logout")
+                }
         ));
 
         this.add(Box.createVerticalGlue());
+        this.revalidate();
+        this.repaint();
     }
 
     private JPanel createAccordion(String title, String[] menus) {
-
         JPanel container = new JPanel();
         container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
         container.setBackground(new Color(33, 37, 41));
 
         // HEADER BUTTON
         JButton header = new JButton(title);
-
         header.setFocusPainted(false);
         header.setBackground(MENU_BG);
         header.setForeground(TEXT_COLOR);
@@ -90,9 +93,7 @@ public class SidebarMainMenu extends JPanel {
         body.setBackground(SIDEBAR_BG);
 
         for (String menu : menus) {
-
             JButton btn = new JButton(menu);
-
             btn.setFocusPainted(false);
             btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 45));
             btn.setBackground(SUBMENU_BG);
@@ -103,7 +104,6 @@ public class SidebarMainMenu extends JPanel {
 
             // HOVER
             btn.addMouseListener(new java.awt.event.MouseAdapter() {
-
                 @Override
                 public void mouseEntered(java.awt.event.MouseEvent evt) {
                     btn.setBackground(HOVER_BG);
@@ -111,46 +111,30 @@ public class SidebarMainMenu extends JPanel {
 
                 @Override
                 public void mouseExited(java.awt.event.MouseEvent evt) {
-                    btn.setBackground(SUBMENU_BG);
+                    if (activeButton != btn) {
+                        btn.setBackground(SUBMENU_BG);
+                    }
                 }
             });
 
             // ACTION
             btn.addActionListener(e -> {
-
-                switch (menu) {
-
-                    case "Karyawan":
-                        showPage(new KaryawanPanel());
-                        break;
-
-                    case "Log Absensi":
-                        showPage(null);
-                        break;
-
-                    case "Pengguna":
-                        showPage(null);
-                        break;
-
-                    case "KiosK":
-                        showPage(new AttendancePage());
-                        break;
-
-                    case "Products":
-                        showPage(null);
-                        break;
-
-                    case "Orders":
-                        showPage(null);
-                        break;
-
-                    case "General":
-                        showPage(new Settings());
-                        break;
-
-                    case "Security":
-                        showPage(null);
-                        break;
+                if (menu.equals(I18nService.get("ui.sidebar.dashboard"))) {
+                    showPanel(new DashboardPanel());
+                } else if (menu.equals(I18nService.get("ui.sidebar.employee"))) {
+                    showPanel(new KaryawanPanel());
+                } else if (menu.equals(I18nService.get("ui.sidebar.logAttendance"))) {
+                    showPanel(new LogAbsensiPanel());
+                } else if (menu.equals(I18nService.get("ui.sidebar.kiosk"))) {
+                    openKiosk();   // Buka AttendancePage sebagai JFrame terpisah
+                    return;        // Jangan ubah active button untuk kiosk
+                } else if (menu.equals(I18nService.get("ui.sidebar.report"))) {
+                    showPanel(new Reports());
+                } else if (menu.equals(I18nService.get("ui.sidebar.settings"))) {
+                    showPanel(new Settings());
+                } else if (menu.equals(I18nService.get("ui.sidebar.logout"))) {
+                    doLogout();
+                    return;
                 }
 
                 // RESET OLD ACTIVE BUTTON
@@ -167,12 +151,10 @@ public class SidebarMainMenu extends JPanel {
         }
 
         // DEFAULT COLLAPSE
-        body.setVisible(false);
+        body.setVisible(true);
 
         header.addActionListener(e -> {
-
             body.setVisible(!body.isVisible());
-
             container.revalidate();
             container.repaint();
         });
@@ -183,27 +165,46 @@ public class SidebarMainMenu extends JPanel {
         return container;
     }
 
-    private void showPage(Component comp) {
-        switch (comp) {
-            case JPanel pnl -> {
-                AdminPage.appContentPane.removeAll();
-                AdminPage.appContentPane.add(pnl, BorderLayout.CENTER);
-                
-                AdminPage.appContentPane.revalidate();
-                AdminPage.appContentPane.repaint();
+    private void doLogout() {
+        int opsi = JOptionPane.showConfirmDialog(
+            this,
+            I18nService.get("ui.logout.message"),
+            I18nService.get("ui.logout.title"),
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE
+        );
+        
+        if (opsi == JOptionPane.YES_OPTION) {
+            JFrame mainFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+            if (mainFrame != null) {
+                mainFrame.dispose();
             }
-            case JFrame frm -> { 
-                JFrame mainFrame = (JFrame) SwingUtilities.getWindowAncestor(SidebarMainMenu.this);
-                if (mainFrame != null) {
-                    mainFrame.dispose();
-                }                
-                
-                frm.setExtendedState(Frame.MAXIMIZED_BOTH);
-                frm.setVisible(true);
-            }
-            default -> {
-            }
+            new LoginPage().setVisible(true);
         }
     }
 
+    /**
+     * Tampilkan JPanel di area konten utama AdminPage.
+     */
+    private void showPanel(JPanel pnl) {
+        AdminPage.appContentPane.removeAll();
+        AdminPage.appContentPane.add(pnl, BorderLayout.CENTER);
+        AdminPage.appContentPane.revalidate();
+        AdminPage.appContentPane.repaint();
+    }
+
+    /**
+     * Buka AttendancePage (KiosK RFID) sebagai JFrame terpisah maximized.
+     */
+    private void openKiosk() {
+        AttendancePage kiosk = new AttendancePage();
+        kiosk.setExtendedState(Frame.MAXIMIZED_BOTH);
+        kiosk.setVisible(true);
+    }
+
+    @Override
+    public void removeNotify() {
+        I18nService.unregisterListener(languageListener);
+        super.removeNotify();
+    }
 }

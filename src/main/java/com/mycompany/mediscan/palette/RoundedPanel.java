@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.mediscan.palette;
 
 import java.awt.Color;
@@ -11,21 +7,11 @@ import java.awt.RenderingHints;
 import java.awt.geom.RoundRectangle2D;
 import javax.swing.JPanel;
 
-/**
- *
- * @author mnish
- */
 public class RoundedPanel extends JPanel {
 
     private int cornerRadius;
     private Color backgroundColor;
 
-    /**
-     * Constructor to create a rounded panel with custom radius and color.
-     *
-     * @param radius The arc width and height of the corners.
-     * @param bgColor The custom background color.
-     */
     public RoundedPanel(int radius, Color bgColor) {
         this.cornerRadius = radius;
         this.backgroundColor = bgColor;
